@@ -1,0 +1,62 @@
+{
+  "empleador": "Empresa Demo S.A.",
+  "rutEmpleador": "76.123.456-7",
+  "area": "Administración",
+  "mes": "Febrero 2024",
+  "trabajador": {
+    "nombre": "María González López",
+    "rut": "15.678.901-2",
+    "cargo": "Analista Contable",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "15/01/2023",
+    "diasTrabajados": 20,
+    "diasVacaciones": 0,
+    "sueldoBase": 900000,
+    "prevision": "AFP Habitat",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {
+      "concepto": "Sueldo Base",
+      "monto": 600000
+    },
+    {
+      "concepto": "Gratificación",
+      "monto": 50000
+    }
+  ],
+  "haberesNoImponibles": [
+    {
+      "concepto": "Movilización",
+      "monto": 30000
+    },
+    {
+      "concepto": "Colación",
+      "monto": 25000
+    },
+    {
+      "concepto": "Cargas Familiares",
+      "monto": 15000
+    }
+  ],
+  "descuentosLegales": [
+    {
+      "concepto": "AFP Provida",
+      "monto": 74425
+    },
+    {
+      "concepto": "Fonasa",
+      "monto": 45500
+    },
+    {
+      "concepto": "Seguro Desempleo",
+      "monto": 3900
+    }
+  ],
+  "otrosDescuentos": [
+    {
+      "concepto": "Anticipos",
+      "monto": 100000
+    }
+  ]
+}

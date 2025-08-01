@@ -1,0 +1,33 @@
+{
+  "empleador": "TEST EMPRESA",
+  "rutEmpleador": "12.345.678-9",
+  "area": "Test",
+  "mes": "Test Mes",
+  "trabajador": {
+    "nombre": "Test Usuario",
+    "rut": "11.111.111-1",
+    "cargo": "Test",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "01/01/2020",
+    "diasTrabajados": 30,
+    "diasVacaciones": 0,
+    "sueldoBase": 400000,
+    "prevision": "AFP Provida",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {"concepto": "Sueldo Base", "monto": 400000},
+    {"concepto": "Gratificación", "monto": 50000}
+  ],
+  "haberesNoImponibles": [
+    {"concepto": "Colación", "monto": 30000},
+    {"concepto": "Movilización", "monto": 30000},
+    {"concepto": "Cargas Familiares", "monto": 0}
+  ],
+  "descuentosLegales": [
+    {"concepto": "AFP Provida", "monto": 51525},
+    {"concepto": "Fonasa", "monto": 31500},
+    {"concepto": "Seguro Desempleo", "monto": 2700}
+  ],
+  "otrosDescuentos": []
+}

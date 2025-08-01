@@ -1,0 +1,44 @@
+{
+  "empleador": "Empresa Ejemplo S.A.",
+  "rutEmpleador": "12.345.678-9",
+  "area": "Recursos Humanos",
+  "mes": "Enero 2024",
+  "trabajador": {
+    "nombre": "Juan Pérez González",
+    "rut": "11.111.111-1",
+    "cargo": "Analista",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "01/01/2020",
+    "diasTrabajados": 30,
+    "diasVacaciones": 0,
+    "sueldoBase": 800000,
+    "prevision": "AFP Modelo",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {"concepto": "Sueldo Base", "monto": 800000},
+    {"concepto": "Gratificación", "monto": 66667},
+    {"concepto": "Otros", "monto": 0}
+  ],
+  "haberesNoImponibles": [
+    {"concepto": "Movilización", "monto": 30000},
+    {"concepto": "Colación", "monto": 25000}
+  ],
+  "descuentosLegales": [
+    {"concepto": "AFP", "monto": 86667},
+    {"concepto": "Salud", "monto": 62000},
+    {"concepto": "Seguro Cesantía", "monto": 2167}
+  ],
+  "otrosDescuentos": [
+    {"concepto": "Anticipos", "monto": 50000},
+    {"concepto": "Préstamos", "monto": 0}
+  ],
+  "totales": {
+    "totalHaberes": 921667,
+    "totalDescuentos": 200834,
+    "impPrevSalud": 148667,
+    "impCesantia": 2167,
+    "baseTributable": 866667,
+    "liquido": 720833
+  }
+}

@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Liquidación de Sueldo</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #E84A27;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .option-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+
+        .option-section h3 {
+            margin-top: 0;
+            color: #444;
+            font-size: 18px;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-input:hover {
+            border-color: #E84A27;
+        }
+
+        .file-input input[type="file"] {
+            display: none;
+        }
+
+        .file-input label {
+            display: block;
+            cursor: pointer;
+            padding: 20px;
+            color: #666;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #E84A27;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            background-color: #d63916;
+        }
+
+        .generate-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .success {
+            color: #388e3c;
+            background-color: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .example-json {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border-left: 4px solid #E84A27;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        .form-section h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #E84A27;
+            font-size: 16px;
+            border-bottom: 2px solid #E84A27;
+            padding-bottom: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #E84A27;
+            outline: none;
+            box-shadow: 0 0 5px rgba(232, 74, 39, 0.3);
+        }
+
+        .dynamic-list {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dynamic-list-header {
+            background-color: #f3f3f3;
+            padding: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dynamic-list-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            gap: 10px;
+        }
+
+        .dynamic-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .dynamic-list-item input {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .dynamic-list-item .concept-input {
+            flex: 2;
+        }
+
+        .dynamic-list-item .amount-input {
+            flex: 1;
+            text-align: right;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-add {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-remove {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-small:hover {
+            opacity: 0.8;
+        }
+
+        .totals-section {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px solid #2196F3;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .total-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 16px;
+            color: #E84A27;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #E84A27;
+            border-bottom-color: #E84A27;
+        }
+
+        .tab:hover {
+            color: #E84A27;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>🧾 Generador de Liquidación de Sueldo</h1>
+
+            <!-- Pestañas de navegación -->
+            <div class="tabs">
+                <button class="tab" :class="{ active: activeTab === 'upload' }" @click="activeTab = 'upload'">
+                    📂 Subir JSON
+                </button>
+                <button class="tab" :class="{ active: activeTab === 'paste' }" @click="activeTab = 'paste'">
+                    ✏️ Pegar JSON
+                </button>
+                <button class="tab" :class="{ active: activeTab === 'form' }" @click="activeTab = 'form'">
+                    📝 Formulario
+                </button>
+            </div>
+
+            <!-- Contenido de las pestañas -->
+
+            <!-- Pestaña 1: Subir archivo JSON -->
+            <div class="tab-content" :class="{ active: activeTab === 'upload' }">
+                <div class="option-section">
+                    <h3>📂 Subir archivo JSON</h3>
+                    <div class="file-input">
+                        <input type="file" id="fileInput" accept=".json" @change="onFileChange" ref="fileInput">
+                        <label for="fileInput">
+                            <div v-if="!fileName">
+                                Haz clic aquí para seleccionar un archivo JSON<br>
+                                <small>o arrastra y suelta el archivo</small>
+                            </div>
+                            <div v-else class="success">
+                                ✅ Archivo cargado: {{ fileName }}
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña 2: Pegar JSON manualmente -->
+            <div class="tab-content" :class="{ active: activeTab === 'paste' }">
+                <div class="option-section">
+                    <h3>✏️ Pegar JSON manualmente</h3>
+                    <textarea v-model="jsonInput" placeholder="Pega aquí tu JSON con los datos de la liquidación..."
+                        @input="validateJson"></textarea>
+
+                    <div v-if="jsonError" class="error">
+                        ❌ Error en JSON: {{ jsonError }}
+                    </div>
+
+                    <div v-if="jsonValid && jsonInput.trim()" class="success">
+                        ✅ JSON válido
+                    </div>
+
+                    <!-- Ejemplo de JSON -->
+                    <details style="margin-top: 15px;">
+                        <summary style="cursor: pointer; color: #E84A27; font-weight: bold;">
+                            📋 Ver ejemplo de JSON
+                        </summary>
+                        <div class="example-json">{{ exampleJson }}</div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Pestaña 3: Formulario interactivo -->
+            <div class="tab-content" :class="{ active: activeTab === 'form' }">
+                <div class="option-section">
+                    <h3>📝 Formulario Interactivo</h3>
+
+                    <!-- Datos de la empresa -->
+                    <div class="form-section">
+                        <h4>🏢 Datos de la Empresa</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Empleador:</label>
+                                <input type="text" v-model="formData.empleador" placeholder="Nombre de la empresa">
+                            </div>
+                            <div class="form-group">
+                                <label>RUT Empleador:</label>
+                                <input type="text" v-model="formData.rutEmpleador" placeholder="12.345.678-9">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Área:</label>
+                                <input type="text" v-model="formData.area" placeholder="Departamento o área">
+                            </div>
+                            <div class="form-group">
+                                <label>Mes:</label>
+                                <input type="text" v-model="formData.mes" placeholder="Enero 2024">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos del trabajador -->
+                    <div class="form-section">
+                        <h4>👤 Datos del Trabajador</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre Completo:</label>
+                                <input type="text" v-model="formData.trabajador.nombre"
+                                    placeholder="Juan Pérez González">
+                            </div>
+                            <div class="form-group">
+                                <label>RUT:</label>
+                                <input type="text" v-model="formData.trabajador.rut" placeholder="11.111.111-1">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Cargo:</label>
+                                <input type="text" v-model="formData.trabajador.cargo" placeholder="Analista">
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de Contrato:</label>
+                                <select v-model="formData.trabajador.tipoContrato">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Indefinido">Indefinido</option>
+                                    <option value="Plazo Fijo">Plazo Fijo</option>
+                                    <option value="Por Obra">Por Obra</option>
+                                    <option value="Honorarios">Honorarios</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Fecha Inicio Contrato:</label>
+                                <input type="date" v-model="formData.trabajador.inicioContrato">
+                            </div>
+                            <div class="form-group">
+                                <label>Días Trabajados:</label>
+                                <input type="number" v-model.number="formData.trabajador.diasTrabajados" min="0"
+                                    max="31">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Días Vacaciones:</label>
+                                <input type="number" v-model.number="formData.trabajador.diasVacaciones" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Sueldo Base:</label>
+                                <input type="number" v-model.number="formData.trabajador.sueldoBase" min="0"
+                                    step="1000">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Previsión:</label>
+                                <input type="text" v-model="formData.trabajador.prevision" placeholder="AFP Modelo">
+                            </div>
+                            <div class="form-group">
+                                <label>Salud:</label>
+                                <select v-model="formData.trabajador.salud">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Fonasa">Fonasa</option>
+                                    <option value="Isapre Banmédica">Isapre Banmédica</option>
+                                    <option value="Isapre Colmena">Isapre Colmena</option>
+                                    <option value="Isapre Cruz Blanca">Isapre Cruz Blanca</option>
+                                    <option value="Isapre Vida Tres">Isapre Vida Tres</option>
+                                    <option value="Otra">Otra</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Haberes Imponibles -->
+                    <div class="form-section">
+                        <h4>💰 Haberes Imponibles</h4>
+                        <div class="dynamic-list">
+                            <div class="dynamic-list-header">
+                                <span>Conceptos e Importes</span>
+                                <button type="button" class="btn-small btn-add" @click="addHaberImponible">
+                                    ➕ Agregar
+                                </button>
+                            </div>
+                            <div v-for="(item, index) in formData.haberesImponibles" :key="index"
+                                class="dynamic-list-item">
+                                <input type="text" v-model="item.concepto" placeholder="Concepto" class="concept-input">
+                                <input type="number" v-model.number="item.monto" placeholder="0" min="0" step="1000"
+                                    class="amount-input">
+                                <button type="button" class="btn-small btn-remove" @click="removeHaberImponible(index)">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Haberes No Imponibles -->
+                    <div class="form-section">
+                        <h4>💵 Haberes No Imponibles</h4>
+                        <div class="dynamic-list">
+                            <div class="dynamic-list-header">
+                                <span>Conceptos e Importes</span>
+                                <button type="button" class="btn-small btn-add" @click="addHaberNoImponible">
+                                    ➕ Agregar
+                                </button>
+                            </div>
+                            <div v-for="(item, index) in formData.haberesNoImponibles" :key="index"
+                                class="dynamic-list-item">
+                                <input type="text" v-model="item.concepto" placeholder="Concepto" class="concept-input">
+                                <input type="number" v-model.number="item.monto" placeholder="0" min="0" step="1000"
+                                    class="amount-input">
+                                <button type="button" class="btn-small btn-remove"
+                                    @click="removeHaberNoImponible(index)">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descuentos Legales -->
+                    <div class="form-section">
+                        <h4>⚖️ Descuentos Legales</h4>
+                        <div class="dynamic-list">
+                            <div class="dynamic-list-header">
+                                <span>Conceptos e Importes</span>
+                                <button type="button" class="btn-small btn-add" @click="addDescuentoLegal">
+                                    ➕ Agregar
+                                </button>
+                            </div>
+                            <div v-for="(item, index) in formData.descuentosLegales" :key="index"
+                                class="dynamic-list-item">
+                                <input type="text" v-model="item.concepto" placeholder="Concepto" class="concept-input">
+                                <input type="number" v-model.number="item.monto" placeholder="0" min="0" step="1000"
+                                    class="amount-input">
+                                <button type="button" class="btn-small btn-remove" @click="removeDescuentoLegal(index)">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Otros Descuentos -->
+                    <div class="form-section">
+                        <h4>📋 Otros Descuentos</h4>
+                        <div class="dynamic-list">
+                            <div class="dynamic-list-header">
+                                <span>Conceptos e Importes</span>
+                                <button type="button" class="btn-small btn-add" @click="addOtroDescuento">
+                                    ➕ Agregar
+                                </button>
+                            </div>
+                            <div v-for="(item, index) in formData.otrosDescuentos" :key="index"
+                                class="dynamic-list-item">
+                                <input type="text" v-model="item.concepto" placeholder="Concepto" class="concept-input">
+                                <input type="number" v-model.number="item.monto" placeholder="0" min="0" step="1000"
+                                    class="amount-input">
+                                <button type="button" class="btn-small btn-remove" @click="removeOtroDescuento(index)">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Totales Calculados -->
+                    <div class="form-section">
+                        <h4>📊 Totales (Calculados Automáticamente)</h4>
+                        <div class="totals-section">
+                            <div class="totals-grid">
+                                <div class="total-item">
+                                    <span>Total Haberes:</span>
+                                    <span>${{ formatMoney(calculatedTotals.totalHaberes) }}</span>
+                                </div>
+                                <div class="total-item">
+                                    <span>Total Descuentos:</span>
+                                    <span>${{ formatMoney(calculatedTotals.totalDescuentos) }}</span>
+                                </div>
+                                <div class="total-item">
+                                    <span>Imp. Prev./Salud:</span>
+                                    <span>${{ formatMoney(calculatedTotals.impPrevSalud) }}</span>
+                                </div>
+                                <div class="total-item">
+                                    <span>Imp. Cesantía:</span>
+                                    <span>${{ formatMoney(calculatedTotals.impCesantia) }}</span>
+                                </div>
+                                <div class="total-item">
+                                    <span>Base Tributable:</span>
+                                    <span>${{ formatMoney(calculatedTotals.baseTributable) }}</span>
+                                </div>
+                                <div class="total-item">
+                                    <span>LÍQUIDO A RECIBIR:</span>
+                                    <span>${{ formatMoney(calculatedTotals.liquido) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para generar liquidación -->
+            <button class="generate-btn" @click="generarLiquidacion" :disabled="!isDataReady">
+                ➡️ Generar Liquidación
+            </button>
+
+            <div v-if="!isDataReady" style="text-align: center; margin-top: 10px; color: #666;">
+                <small v-if="activeTab === 'form'">Completa los campos del formulario para continuar</small>
+                <small v-else>Carga un archivo JSON o pega los datos manualmente para continuar</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const jsonInput = ref('');
+                const fileName = ref('');
+                const jsonError = ref('');
+                const jsonValid = ref(false);
+                const fileInput = ref(null);
+                const activeTab = ref('upload');
+
+                // Datos del formulario
+                const formData = ref({
+                    empleador: '',
+                    rutEmpleador: '',
+                    area: '',
+                    mes: '',
+                    trabajador: {
+                        nombre: '',
+                        rut: '',
+                        cargo: '',
+                        tipoContrato: '',
+                        inicioContrato: '',
+                        diasTrabajados: 30,
+                        diasVacaciones: 0,
+                        sueldoBase: 0,
+                        prevision: '',
+                        salud: ''
+                    },
+                    haberesImponibles: [
+                        { concepto: 'Sueldo Base', monto: 0 },
+                        { concepto: 'Gratificación', monto: 0 }
+                    ],
+                    haberesNoImponibles: [
+                        { concepto: 'Movilización', monto: 0 },
+                        { concepto: 'Colación', monto: 0 }
+                    ],
+                    descuentosLegales: [
+                        { concepto: 'AFP', monto: 0 },
+                        { concepto: 'Salud', monto: 0 },
+                        { concepto: 'Seguro Cesantía', monto: 0 }
+                    ],
+                    otrosDescuentos: [
+                        { concepto: 'Anticipos', monto: 0 },
+                        { concepto: 'Préstamos', monto: 0 }
+                    ]
+                });
+
+                const exampleJson = `{
+  "empleador": "Empresa Ejemplo S.A.",
+  "rutEmpleador": "12.345.678-9",
+  "area": "Recursos Humanos",
+  "mes": "Enero 2024",
+  "trabajador": {
+    "nombre": "Juan Pérez González",
+    "rut": "11.111.111-1",
+    "cargo": "Analista",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "01/01/2020",
+    "diasTrabajados": 30,
+    "diasVacaciones": 0,
+    "sueldoBase": 800000,
+    "prevision": "AFP Modelo",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {"concepto": "Sueldo Base", "monto": 800000},
+    {"concepto": "Gratificación", "monto": 66667},
+    {"concepto": "Otros", "monto": 0}
+  ],
+  "haberesNoImponibles": [
+    {"concepto": "Movilización", "monto": 30000},
+    {"concepto": "Colación", "monto": 25000}
+  ],
+  "descuentosLegales": [
+    {"concepto": "AFP", "monto": 86667},
+    {"concepto": "Salud", "monto": 62000},
+    {"concepto": "Seguro Cesantía", "monto": 2167}
+  ],
+  "otrosDescuentos": [
+    {"concepto": "Anticipos", "monto": 50000},
+    {"concepto": "Préstamos", "monto": 0}
+  ],
+  "totales": {
+    "totalHaberes": 921667,
+    "totalDescuentos": 200834,
+    "impPrevSalud": 148667,
+    "impCesantia": 2167,
+    "baseTributable": 866667,
+    "liquido": 720833
+  }
+}`;
+
+                // Totales calculados automáticamente
+                const calculatedTotals = computed(() => {
+                    const totalHaberesImponibles = formData.value.haberesImponibles.reduce((sum, item) => sum + (item.monto || 0), 0);
+                    const totalHaberesNoImponibles = formData.value.haberesNoImponibles.reduce((sum, item) => sum + (item.monto || 0), 0);
+                    const totalDescuentosLegales = formData.value.descuentosLegales.reduce((sum, item) => sum + (item.monto || 0), 0);
+                    const totalOtrosDescuentos = formData.value.otrosDescuentos.reduce((sum, item) => sum + (item.monto || 0), 0);
+
+                    const totalHaberes = totalHaberesImponibles + totalHaberesNoImponibles;
+                    const totalDescuentos = totalDescuentosLegales + totalOtrosDescuentos;
+
+                    // Buscar AFP y Salud en descuentos legales
+                    const afp = formData.value.descuentosLegales.find(d => d.concepto.toLowerCase().includes('afp'))?.monto || 0;
+                    const salud = formData.value.descuentosLegales.find(d => d.concepto.toLowerCase().includes('salud'))?.monto || 0;
+                    const cesantia = formData.value.descuentosLegales.find(d => d.concepto.toLowerCase().includes('cesant'))?.monto || 0;
+
+                    const impPrevSalud = afp + salud;
+                    const impCesantia = cesantia;
+                    const baseTributable = totalHaberesImponibles;
+                    const liquido = totalHaberes - totalDescuentos;
+
+                    return {
+                        totalHaberes,
+                        totalDescuentos,
+                        impPrevSalud,
+                        impCesantia,
+                        baseTributable,
+                        liquido
+                    };
+                });
+
+                const isDataReady = computed(() => {
+                    if (activeTab.value === 'form') {
+                        // Validar campos básicos del formulario
+                        return formData.value.empleador &&
+                            formData.value.trabajador.nombre &&
+                            formData.value.trabajador.rut;
+                    }
+                    return jsonValid.value && jsonInput.value.trim() !== '';
+                });
+
+                // Funciones para formatear dinero
+                const formatMoney = (amount) => {
+                    return new Intl.NumberFormat('es-CL').format(amount || 0);
+                };
+
+                // Funciones para manejar listas dinámicas
+                const addHaberImponible = () => {
+                    formData.value.haberesImponibles.push({ concepto: '', monto: 0 });
+                };
+
+                const removeHaberImponible = (index) => {
+                    if (formData.value.haberesImponibles.length > 1) {
+                        formData.value.haberesImponibles.splice(index, 1);
+                    }
+                };
+
+                const addHaberNoImponible = () => {
+                    formData.value.haberesNoImponibles.push({ concepto: '', monto: 0 });
+                };
+
+                const removeHaberNoImponible = (index) => {
+                    if (formData.value.haberesNoImponibles.length > 1) {
+                        formData.value.haberesNoImponibles.splice(index, 1);
+                    }
+                };
+
+                const addDescuentoLegal = () => {
+                    formData.value.descuentosLegales.push({ concepto: '', monto: 0 });
+                };
+
+                const removeDescuentoLegal = (index) => {
+                    if (formData.value.descuentosLegales.length > 1) {
+                        formData.value.descuentosLegales.splice(index, 1);
+                    }
+                };
+
+                const addOtroDescuento = () => {
+                    formData.value.otrosDescuentos.push({ concepto: '', monto: 0 });
+                };
+
+                const removeOtroDescuento = (index) => {
+                    if (formData.value.otrosDescuentos.length > 1) {
+                        formData.value.otrosDescuentos.splice(index, 1);
+                    }
+                };
+
+                const validateJson = () => {
+                    if (!jsonInput.value.trim()) {
+                        jsonError.value = '';
+                        jsonValid.value = false;
+                        return;
+                    }
+
+                    try {
+                        JSON.parse(jsonInput.value);
+                        jsonError.value = '';
+                        jsonValid.value = true;
+                    } catch (error) {
+                        jsonError.value = error.message;
+                        jsonValid.value = false;
+                    }
+                };
+
+                const onFileChange = (event) => {
+                    const file = event.target.files[0];
+                    if (!file) {
+                        fileName.value = '';
+                        return;
+                    }
+
+                    fileName.value = file.name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        jsonInput.value = e.target.result;
+                        validateJson();
+                    };
+                    reader.readAsText(file);
+                };
+
+                const generarLiquidacion = () => {
+                    if (!isDataReady.value) {
+                        alert('Por favor, completa los datos antes de generar la liquidación.');
+                        return;
+                    }
+
+                    try {
+                        let data;
+
+                        if (activeTab.value === 'form') {
+                            // Convertir datos del formulario a JSON
+                            data = {
+                                empleador: formData.value.empleador,
+                                rutEmpleador: formData.value.rutEmpleador,
+                                area: formData.value.area,
+                                mes: formData.value.mes,
+                                trabajador: {
+                                    ...formData.value.trabajador,
+                                    inicioContrato: formatDate(formData.value.trabajador.inicioContrato)
+                                },
+                                haberesImponibles: formData.value.haberesImponibles.filter(item => item.concepto.trim()),
+                                haberesNoImponibles: formData.value.haberesNoImponibles.filter(item => item.concepto.trim()),
+                                descuentosLegales: formData.value.descuentosLegales.filter(item => item.concepto.trim()),
+                                otrosDescuentos: formData.value.otrosDescuentos.filter(item => item.concepto.trim()),
+                                totales: calculatedTotals.value
+                            };
+                        } else {
+                            // Usar datos del JSON
+                            data = JSON.parse(jsonInput.value);
+                        }
+
+                        const html = generarHTML(data);
+                        const nuevaVentana = window.open('', '_blank');
+                        nuevaVentana.document.write(html);
+                        nuevaVentana.document.close();
+                    } catch (error) {
+                        alert('Error al procesar los datos: ' + error.message);
+                    }
+                };
+
+                const formatDate = (dateString) => {
+                    if (!dateString) return '';
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('es-CL');
+                };
+
+                const generarHTML = (data) => {
+                    const formatMoney = (amount) => {
+                        return new Intl.NumberFormat('es-CL', {
+                            style: 'currency',
+                            currency: 'CLP',
+                            minimumFractionDigits: 0
+                        }).format(amount);
+                    };
+
+                    return `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquidación de Sueldo - ${data.trabajador.nombre}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .logo {
+            font-size: 18px;
+            font-weight: bold;
+            color: #E84A27;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .info-table td {
+            padding: 4px;
+            vertical-align: top;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+
+        .table th,
+        .table td {
+            padding: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .table th {
+            background-color: #f3f3f3;
+            text-align: left;
+        }
+
+        .table tfoot td {
+            font-weight: bold;
+            background-color: #f3f3f3;
+        }
+
+        .totales {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .totales div {
+            flex: 1;
+            padding: 8px;
+            background-color: #e8ecf8;
+            font-weight: bold;
+        }
+
+        .resumen {
+            background-color: #f3f3f3;
+            padding: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .liquido {
+            background-color: #d8e5ff;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .firma {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #E84A27;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        .print-button:hover {
+            background-color: #d63916;
+        }
+
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+
+    <div class="header">
+        <div>
+            <h1>Liquidación de Sueldo</h1>
+            <div><span class="label">Empleador:</span> ${data.empleador} (${data.rutEmpleador})</div>
+            <div><span class="label">Área:</span> ${data.area}</div>
+            <div><span class="label">Mes:</span> ${data.mes}</div>
+        </div>
+        <div class="logo">[LOGO]</div>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td><span class="label">Sr(a):</span> ${data.trabajador.nombre}</td>
+            <td><span class="label">Tipo Contrato:</span> ${data.trabajador.tipoContrato}</td>
+            <td><span class="label">Previsión:</span> ${data.trabajador.prevision}</td>
+        </tr>
+        <tr>
+            <td><span class="label">RUT:</span> ${data.trabajador.rut}</td>
+            <td><span class="label">Inicio Contrato:</span> ${data.trabajador.inicioContrato}</td>
+            <td><span class="label">Salud:</span> ${data.trabajador.salud}</td>
+        </tr>
+        <tr>
+            <td><span class="label">Cargo:</span> ${data.trabajador.cargo}</td>
+            <td><span class="label">Días Trabajados:</span> ${data.trabajador.diasTrabajados}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span class="label">Sueldo Base:</span> ${formatMoney(data.trabajador.sueldoBase)}</td>
+            <td><span class="label">Días Vacaciones Tomados:</span> ${data.trabajador.diasVacaciones}</td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div style="display: flex; gap: 20px;" class="section">
+        <div style="flex: 1;">
+            <h2>HABERES IMPONIBLES</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.haberesImponibles.map(item => `
+                        <tr>
+                            <td>${item.concepto}</td>
+                            <td>${formatMoney(item.monto)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total Haberes Imponibles</td>
+                        <td>${formatMoney(data.haberesImponibles.reduce((sum, item) => sum + item.monto, 0))}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <h2>HABERES NO IMPONIBLES</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.haberesNoImponibles.map(item => `
+                        <tr>
+                            <td>${item.concepto}</td>
+                            <td>${formatMoney(item.monto)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total Haberes No Imponibles</td>
+                        <td>${formatMoney(data.haberesNoImponibles.reduce((sum, item) => sum + item.monto, 0))}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div style="flex: 1;">
+            <h2>DESCUENTOS LEGALES</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.descuentosLegales.map(item => `
+                        <tr>
+                            <td>${item.concepto}</td>
+                            <td>${formatMoney(item.monto)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total Descuentos Legales</td>
+                        <td>${formatMoney(data.descuentosLegales.reduce((sum, item) => sum + item.monto, 0))}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <h2>OTROS DESCUENTOS</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.otrosDescuentos.map(item => `
+                        <tr>
+                            <td>${item.concepto}</td>
+                            <td>${formatMoney(item.monto)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total Otros Descuentos</td>
+                        <td>${formatMoney(data.otrosDescuentos.reduce((sum, item) => sum + item.monto, 0))}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="totales">
+        <div>Total Haberes: ${formatMoney(data.totales.totalHaberes)}</div>
+        <div>Total Descuentos: ${formatMoney(data.totales.totalDescuentos)}</div>
+    </div>
+
+    <div class="resumen">
+        <div>IMP. PREV./SALUD: ${formatMoney(data.totales.impPrevSalud)}</div>
+        <div>IMP. CESANTÍA: ${formatMoney(data.totales.impCesantia)}</div>
+        <div>BASE TRIBUTABLE: ${formatMoney(data.totales.baseTributable)}</div>
+    </div>
+
+    <div class="liquido">LÍQUIDO A RECIBIR: ${formatMoney(data.totales.liquido)}</div>
+
+    <p>Certifico que he recibido de ${data.empleador} (${data.rutEmpleador}) a mi entera satisfacción el saldo indicado en la
+        presente Liquidación y no tengo cargo ni cobro posterior que hacer.</p>
+
+    <div class="firma">_________________________<br>FIRMA CONFORME</div>
+
+</body>
+</html>
+                    `;
+                };
+
+                return {
+                    jsonInput,
+                    fileName,
+                    jsonError,
+                    jsonValid,
+                    fileInput,
+                    activeTab,
+                    formData,
+                    calculatedTotals,
+                    exampleJson,
+                    isDataReady,
+                    formatMoney,
+                    addHaberImponible,
+                    removeHaberImponible,
+                    addHaberNoImponible,
+                    removeHaberNoImponible,
+                    addDescuentoLegal,
+                    removeDescuentoLegal,
+                    addOtroDescuento,
+                    removeOtroDescuento,
+                    validateJson,
+                    onFileChange,
+                    generarLiquidacion
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

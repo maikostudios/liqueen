@@ -1,0 +1,188 @@
+/* Estilos específicos para formularios */
+
+.form-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-light);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 5px rgba(232, 74, 39, 0.3);
+}
+
+.form-group textarea {
+  min-height: 200px;
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+}
+
+/* Listas dinámicas */
+.dynamic-list {
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.dynamic-list-header {
+  background-color: #f3f3f3;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dynamic-list-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+}
+
+.dynamic-list-item:last-child {
+  border-bottom: none;
+}
+
+.dynamic-list-item input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+}
+
+.dynamic-list-item .concept-input {
+  flex: 2;
+}
+
+.dynamic-list-item .amount-input {
+  flex: 1;
+  text-align: right;
+}
+
+/* Sección de totales */
+.totals-section {
+  background-color: #e8f4fd;
+  padding: 15px;
+  border-radius: 5px;
+  border: 2px solid #2196F3;
+}
+
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.total-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.total-item:last-child {
+  border-bottom: none;
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--primary-color);
+}
+
+/* Carga de archivos */
+.file-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.file-input:hover {
+  border-color: var(--primary-color);
+}
+
+.file-input input[type="file"] {
+  display: none;
+}
+
+.file-input label {
+  display: block;
+  cursor: pointer;
+  padding: 20px;
+  color: #666;
+}
+
+/* Ejemplo JSON */
+.example-json {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  border-left: 4px solid var(--primary-color);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* Responsive para formularios */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-group {
+    min-width: auto;
+  }
+  
+  .dynamic-list-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .dynamic-list-item input {
+    margin-bottom: 5px;
+  }
+  
+  .totals-grid {
+    grid-template-columns: 1fr;
+  }
+}

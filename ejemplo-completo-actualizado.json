@@ -1,0 +1,37 @@
+{
+  "empleador": "Constructora Los Andes S.A.",
+  "rutEmpleador": "96.789.123-4",
+  "area": "Obras y Construcción",
+  "mes": "Marzo 2024",
+  "trabajador": {
+    "nombre": "Carlos Eduardo Morales Sánchez",
+    "rut": "18.456.789-0",
+    "cargo": "Maestro Constructor",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "10/01/2022",
+    "diasTrabajados": 25,
+    "diasVacaciones": 5,
+    "sueldoBase": 1200000,
+    "prevision": "AFP Provida",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {"concepto": "Sueldo Base", "monto": 1000000},
+    {"concepto": "Gratificación", "monto": 83333},
+    {"concepto": "Horas Extra", "monto": 150000}
+  ],
+  "haberesNoImponibles": [
+    {"concepto": "Movilización", "monto": 45000},
+    {"concepto": "Colación", "monto": 35000},
+    {"concepto": "Cargas Familiares", "monto": 25000}
+  ],
+  "descuentosLegales": [
+    {"concepto": "AFP Provida", "monto": 141167},
+    {"concepto": "Fonasa", "monto": 86333},
+    {"concepto": "Seguro Desempleo", "monto": 7400}
+  ],
+  "otrosDescuentos": [
+    {"concepto": "Anticipos", "monto": 200000},
+    {"concepto": "Préstamos Empresa", "monto": 75000}
+  ]
+}

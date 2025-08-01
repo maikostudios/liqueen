@@ -1,0 +1,33 @@
+{
+  "empleador": "PISCICOLA HUILILCO LIMITADA",
+  "rutEmpleador": "78.665.600-1",
+  "area": "Operaciones",
+  "mes": "Febrero 2025",
+  "trabajador": {
+    "nombre": "Dario Fernando Avendaño Campos",
+    "rut": "15.554.385-K",
+    "cargo": "Operario",
+    "tipoContrato": "Indefinido",
+    "inicioContrato": "01/08/2006",
+    "diasTrabajados": 28,
+    "diasVacaciones": 0,
+    "sueldoBase": 786000,
+    "prevision": "AFP Provida",
+    "salud": "Fonasa"
+  },
+  "haberesImponibles": [
+    {"concepto": "Sueldo Base", "monto": 999999},
+    {"concepto": "Gratificación", "monto": 100000}
+  ],
+  "haberesNoImponibles": [
+    {"concepto": "Colación", "monto": 76904},
+    {"concepto": "Movilización", "monto": 76904},
+    {"concepto": "Cargas Familiares", "monto": 50000}
+  ],
+  "descuentosLegales": [
+    {"concepto": "AFP Provida", "monto": 999999},
+    {"concepto": "Fonasa", "monto": 999999},
+    {"concepto": "Seguro Desempleo", "monto": 999999}
+  ],
+  "otrosDescuentos": []
+}
