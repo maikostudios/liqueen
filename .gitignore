@@ -180,4 +180,12 @@ license_*.json
 # Local storage and cache
 .cache/
 storage/
-node_modules
+# Carpetas específicas del proyecto
+license-generator/
+licence-generator/
+liquidaciones/
+
+# Archivos de prueba y desarrollo
+test-*.json
+test-*.js
+*.test.js
