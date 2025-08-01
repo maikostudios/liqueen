@@ -17,18 +17,21 @@
 ## 🚀 Características Principales
 
 ### ✨ **Sistema de Licencias Robusto**
+
 - 🔐 **Validación híbrida online/offline** con Firebase + validación local
 - 🔑 **Credenciales maestras** para acceso de emergencia
 - 🛡️ **Cifrado AES-256** de licencias con hardware binding
 - 📊 **Logging avanzado** categorizado con rotación automática
 
 ### 🎨 **UI/UX Moderna**
+
 - 🌙 **Modo día/noche** completo con persistencia local
 - 🎯 **Branding profesional** Liqueen con logos oficiales
 - 📱 **Diseño responsive** optimizado sin scroll
 - ♿ **Alto contraste WCAG AA** para accesibilidad
 
 ### 🔧 **Funcionalidades Avanzadas**
+
 - 📄 **Múltiples flujos de entrada**: Formulario, JSON, carga masiva
 - 🖨️ **Generación PDF** profesional con logos personalizados
 - 💾 **Persistencia local** con cifrado de datos sensibles
@@ -36,19 +39,20 @@
 
 ## 🛠️ Stack Tecnológico
 
-| Tecnología | Versión | Propósito |
-|------------|---------|-----------|
-| **Vue.js** | 3.x | Framework frontend reactivo |
-| **Electron** | 25.x | Wrapper de aplicación desktop |
-| **Firebase** | 10.x | Autenticación y base de datos |
-| **Vite** | 4.x | Build system y desarrollo |
-| **crypto-js** | 4.x | Cifrado AES-256 y hashing |
-| **node-machine-id** | 1.x | Hardware fingerprinting |
+| Tecnología          | Versión | Propósito                     |
+| ------------------- | ------- | ----------------------------- |
+| **Vue.js**          | 3.x     | Framework frontend reactivo   |
+| **Electron**        | 25.x    | Wrapper de aplicación desktop |
+| **Firebase**        | 10.x    | Autenticación y base de datos |
+| **Vite**            | 4.x     | Build system y desarrollo     |
+| **crypto-js**       | 4.x     | Cifrado AES-256 y hashing     |
+| **node-machine-id** | 1.x     | Hardware fingerprinting       |
 
 ## 📦 Instalación y Desarrollo
 
 ### Prerrequisitos
-- Node.js 18+ 
+
+- Node.js 18+
 - npm o yarn
 - Git
 
@@ -92,19 +96,22 @@ VITE_FIREBASE_APP_ID=tu_app_id
 ## 🔒 Sistema de Seguridad
 
 ### Autenticación
+
 - **Firebase Authentication** para usuarios online
 - **Validación local** con hash de contraseñas
 - **Credenciales maestras** hardcodeadas para emergencias
 - **Tokens de sesión** con expiración automática
 
 ### Cifrado de Datos
+
 - **AES-256** para archivos de licencia locales
 - **Hardware binding** único por dispositivo
 - **MD5 hashing** para credenciales maestras
 - **Ofuscación** de datos sensibles en logs
 
 ### Licencias
-- **Formato**: `LIQ-YYYY-XXXX-YYYY-ZZZZ`
+
+- **Formato**: `MM-YYYY-XXXX-YYYY-ZZZZ`
 - **Validez**: 2 años para usuarios, ilimitado para admins
 - **Binding**: Una licencia por hardware ID
 - **Validación**: Online cada 30 días, grace period de 15 días
@@ -112,20 +119,21 @@ VITE_FIREBASE_APP_ID=tu_app_id
 ## 📱 Uso de la Aplicación
 
 ### Credenciales Maestras
+
 ```
-Email: maikostudios@gmail.com
-Contraseña: 123456
 Permisos: Acceso completo + reset de configuración
 ```
 
 ### Flujos de Trabajo
 
 1. **📝 Formulario Manual**
+
    - Completar campos de empleador y trabajador
    - Cálculos automáticos de imposiciones
    - Generación PDF instantánea
 
 2. **📂 Carga de JSON**
+
    - Subir archivo JSON con datos estructurados
    - Validación automática de formato
    - Previsualización antes de generar
@@ -138,6 +146,7 @@ Permisos: Acceso completo + reset de configuración
 ## 🎨 Temas y Personalización
 
 ### Sistema de Temas
+
 - **Modo Claro**: Fondo blanco, texto oscuro, gradientes azules
 - **Modo Oscuro**: Fondo slate, texto claro, gradientes adaptados
 - **Toggle flotante**: Iconos ☀️/🌙 con animaciones
@@ -145,6 +154,7 @@ Permisos: Acceso completo + reset de configuración
 - **Detección automática**: Respeta `prefers-color-scheme`
 
 ### Personalización
+
 - **Logos**: Configurables en `/src/img/logos/`
 - **Colores**: Variables CSS en `/src/assets/styles/main.css`
 - **Temas**: Modificables en `ThemeService.js`
@@ -152,12 +162,14 @@ Permisos: Acceso completo + reset de configuración
 ## 📊 Logging y Diagnóstico
 
 ### Categorías de Logs
+
 - **DEBUG**: Información detallada de desarrollo
 - **INFO**: Eventos normales del sistema
 - **WARN**: Advertencias que no afectan funcionamiento
 - **ERROR**: Errores que requieren atención
 
 ### Logs Especializados
+
 - **authLog**: Eventos de autenticación
 - **licenseLog**: Gestión de licencias
 - **Ofuscación**: Emails parcialmente ocultos por privacidad
@@ -179,6 +191,7 @@ Este software es propietario y está protegido por derechos de autor. El uso, di
 ## 🔄 Changelog
 
 ### v2.2.0 - Agosto 2025
+
 - ✅ Sistema de licencias robusto implementado
 - ✅ Modo día/noche con persistencia
 - ✅ Branding profesional Liqueen
@@ -187,6 +200,7 @@ Este software es propietario y está protegido por derechos de autor. El uso, di
 - ✅ UI/UX optimizada sin scroll
 
 ### v2.1.0 - Agosto 2025
+
 - ✅ UX/UI rediseñada con alto contraste
 - ✅ Sistema de notificaciones mejorado
 - ✅ Flujos simplificados
